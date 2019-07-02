@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdio.h>
 #include "main.h"
 #include "app_x-cube-ai.h"
 
@@ -63,7 +64,11 @@ void MX_USART6_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int __io_putchar(int ch)
+{
+	HAL_UART_Transmit(&huart6, (uint8_t*) &ch, 1, 10);
+	return ch;
+}
 /* USER CODE END 0 */
 
 /**
@@ -106,6 +111,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
+  printf("Program started\n");
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

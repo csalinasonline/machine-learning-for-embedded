@@ -36,6 +36,6 @@
 #define  __RTE_COMPONENTS_H__ 
 
 /* Defines ------------------------------------------------------------------*/
-#define AI_VALIDATION 
+#define AI_ApplicationTemplate 
  
 #endif /* __RTE_COMPONENTS_H__ */

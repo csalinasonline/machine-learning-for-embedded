@@ -53,7 +53,6 @@
 #include <string.h>
 #include "app_x-cube-ai.h"
 #include "bsp_ai.h"
-#include "aiValidation.h"
 #include "ai_datatypes_defines.h"
 
 /*************************************************************************
@@ -62,14 +61,12 @@
 void MX_X_CUBE_AI_Init(void)
 {
     MX_UARTx_Init();
-    aiValidationInit();
     /* USER CODE BEGIN 0 */
     /* USER CODE END 0 */
 }
 
 void MX_X_CUBE_AI_Process(void)
 {
-    aiValidationProcess();
     /* USER CODE BEGIN 1 */
     /* USER CODE END 1 */
 }
