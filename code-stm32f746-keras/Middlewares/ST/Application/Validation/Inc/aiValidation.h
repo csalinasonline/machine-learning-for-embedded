@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    aiSystemPerformance.h
+  * @file    aiValidation.h
   * @author  MCD Vertical Application Team
-  * @brief   Entry points for AI system performance application
+  * @brief   AI Validation application
   ******************************************************************************
   * @attention
   *
@@ -17,8 +17,8 @@
   ******************************************************************************
   */
 
-#ifndef __AI_SYSTEM_PERFORMANCE_H__
-#define __AI_SYSTEM_PERFORMANCE_H__
+#ifndef __AI_VALIDATION_H__
+#define __AI_VALIDATION_H__
 
 #include <stdint.h>
 
@@ -26,12 +26,12 @@
 extern "C" {
 #endif
 
-int aiSystemPerformanceInit(void);
-int aiSystemPerformanceProcess(void);
-void aiSystemPerformanceDeInit(void);
+int aiValidationInit(void);
+int aiValidationProcess(void);
+void aiValidationDeInit(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __AI_SYSTEM_PERFORMANCE_H__ */
+#endif /* __AI_VALIDATION_H__ */
