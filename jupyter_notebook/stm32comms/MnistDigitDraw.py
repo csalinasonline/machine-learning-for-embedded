@@ -11,6 +11,7 @@ class MnistDigitDraw:
         self._mnist_width = 28
         self._mnist_height = 28
         self._output_image = PIL.Image.new('L', (self._mnist_width, self._mnist_height), (255))
+        self._export_fname = 'digit.txt'
 
     def start(self):
         # Create a frame that will host the canvas and buttons
@@ -31,6 +32,9 @@ class MnistDigitDraw:
         # Inference button
         self._btn_inference = Button(self._frame, text="Inference", command = self._btn_inference)
         self._btn_inference.pack(side=BOTTOM)
+        # Inference button
+        self._btn_export = Button(self._frame, text="Export", command = self._btn_export)
+        self._btn_export.pack(side=BOTTOM)
         # Clear button
         self._btn_clear = Button(self._frame, text="Clear", command = self._btn_clear)
         self._btn_clear.pack(side=BOTTOM)
@@ -43,21 +47,35 @@ class MnistDigitDraw:
         self._canvas.create_oval(x1, y1, x2, y2, fill="black",width=20)
         self._draw.line([x1, y1, x2, y2],fill="black",width=20)
 
-    def _btn_inference(self):
-        """
-        Send the data to the stm32f746 for processing
-        """
+    def _convert_image(self):
         # First down-scale the image at mnist size
         img = self._input_image.resize((self._mnist_width,self._mnist_height), PIL.Image.ANTIALIAS).filter(ImageFilter.SHARPEN)
         # Then up-scale again to width/height
         self._output_image = ImageTk.PhotoImage(img.resize((self._width, self._height), PIL.Image.NONE))
         # Display the image in the right windows
         self._img_canvas.create_image(self._width/2, self._height/2, image=self._output_image)
-        # Convert the image to a numpy array
         arr = self._image_to_array(img)
+        return arr
+
+    def _btn_export(self):
+        """
+        Exports the digit to a text file in order to import it in the jupyter notebook
+        """
+        # Convert the image to the MNIST format
+        arr = self._convert_image()
+        # Convert the image to a numpy array
         # Debug save array to file
-        np.savetxt('digit.txt', arr)
-        print("saving image")
+        np.savetxt(self._export_fname, arr)
+        print("Exported image to %s" % (self._export_fname))
+
+    def _btn_inference(self):
+        """
+        Send the data to the stm32f746 for processing
+        """
+        # Convert the image to the MNIST format
+        arr = self._convert_image()
+        # Send the array to the MCU via serial
+        print("Not implemented yet...")
 
     def _btn_clear(self):
         """
