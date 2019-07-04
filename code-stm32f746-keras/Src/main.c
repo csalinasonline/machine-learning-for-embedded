@@ -25,17 +25,30 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "comm_buffer.h"
+#include "debug_trace.h"
+#include "timer_sched.h"
+#include "pb_common.h"
+#include "pb_encode.h"
+#include "pb_decode.h"
+#include "mnist_predict.pb.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+struct tp_resp {
+	float digits[10];
+};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define RX_BUFFER_SIZE 1024
+#define TX_BUFFER_SIZE 100
+#define UART_BUFFER_SIZE 256
 
+#define DEBUG_PORT GPIOG
+#define DEBUG_PIN GPIO_PIN_7
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,6 +64,22 @@ UART_HandleTypeDef huart6;
 
 /* USER CODE BEGIN PV */
 
+DECLARE_COMM_BUFFER(dbg_uart, UART_BUFFER_SIZE, UART_BUFFER_SIZE);
+uint8_t tx_buffer[TX_BUFFER_SIZE];
+uint8_t rx_buffer[RX_BUFFER_SIZE];
+
+__IO uint32_t glb_tmr_1ms = 0;
+__IO uint8_t tmp_rx = 0;
+__IO uint32_t rx_timeout = 0;
+
+uint32_t trace_levels;
+
+/* Benchmark timer object */
+struct obj_timer_t * benchmark_timer;
+
+/* Create the list head for the timer */
+static LIST_HEAD(obj_timer_list);
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,15 +88,81 @@ static void MX_GPIO_Init(void);
 static void MX_CRC_Init(void);
 void MX_USART6_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void debug_pin_init(void);
+void dbg_uart_parser(uint8_t *buffer, size_t bufferlen, uint8_t sender);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int __io_putchar(int ch)
+static inline int send_reply()
 {
-	HAL_UART_Transmit(&huart6, (uint8_t*) &ch, 1, 10);
-	return ch;
+	int ret = 0;
+
+	struct tp_resp resp;
+
+	MnistDigitPredictResponse msg = MnistDigitPredictResponse_init_zero;
+//	for (int i=0; i<10; i++) {
+//		resp.digits[i] = 0.1234 + i;
+//		TRACE(("Number: %f\n", resp.digits[i]));
+//	}
+	msg.exec_time = 13000;
+	msg.found_digit = 8;
+	memcpy((void*) &msg.resp.bytes, &resp, sizeof(struct tp_resp));
+	msg.resp.size = sizeof(struct tp_resp);
+
+//	TRACE(("---------------------\n"));
+//	float * f = (float*) &msg.resp.bytes;
+//	for (int i=0; i<10; i++) {
+//		TRACE(("Number: %f\n", *(f + i)));
+//	}
+
+	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t*) tx_buffer, TX_BUFFER_SIZE);
+	bool status = pb_encode(&stream, MnistDigitPredictResponse_fields, &msg);
+	if (!status) {
+		TRACE(("Failed to encode\n"));
+		return EXIT_FAILURE;
+	}
+
+//	TRACE(("Encode succeded:\n")); /* prints !!!Hello World!!! */
+//	for (int i=0; i<stream.bytes_written; i++) {
+//		TRACE(("%02X,", tx_buffer[i]));
+//	}
+//	TRACE(("\n"));
+//
+//	TRACE(("PB data:\n"));
+	HAL_UART_Transmit(&huart6, tx_buffer, stream.bytes_written, 100);
+	return ret;
+}
+
+
+static inline void toggle_debug_pin(void)
+{
+	/* First toggle */
+	DEBUG_PORT->ODR |= DEBUG_PIN;
+	DEBUG_PORT->ODR &= ~DEBUG_PIN;
+
+	/* Second toggle */
+	DEBUG_PORT->ODR |= DEBUG_PIN;
+	DEBUG_PORT->ODR &= ~DEBUG_PIN;
+}
+
+
+void main_loop()
+{
+	if (glb_tmr_1ms) {
+		glb_tmr_1ms = 0;
+
+		mod_timer_polling(&obj_timer_list);
+
+		if (rx_timeout) rx_timeout--;
+		if (rx_timeout == 1) {
+			rx_timeout = 0;
+			dbg_uart.rx_buffer[dbg_uart.rx_ptr_in] = 0; // terminate string
+			TRACE(("Received: %s\n", dbg_uart.rx_buffer));
+			dbg_uart_parser(dbg_uart.rx_buffer, dbg_uart.rx_ptr_in, 0);
+			dbg_uart.rx_ptr_in = 0;
+		}
+	}
 }
 /* USER CODE END 0 */
 
@@ -110,6 +205,15 @@ int main(void)
   MX_X_CUBE_AI_Init();
   /* USER CODE BEGIN 2 */
 
+	trace_levels_set(
+			0
+			| TRACE_LEVEL_DEFAULT
+			,1);
+
+	HAL_UART_Receive_IT(&huart6, (uint8_t*) &tmp_rx, 1);
+
+	/* Init debug pin */
+	debug_pin_init();
   /* USER CODE END 2 */
   printf("Program started\n");
 
@@ -121,6 +225,7 @@ int main(void)
 
   MX_X_CUBE_AI_Process();
     /* USER CODE BEGIN 3 */
+  	  main_loop();
   }
   /* USER CODE END 3 */
 }
@@ -261,7 +366,49 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void debug_pin_init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOG_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(DEBUG_PORT, DEBUG_PIN, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PG7 */
+  GPIO_InitStruct.Pin = DEBUG_PIN;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+}
+
+void dbg_uart_parser(uint8_t *buffer, size_t bufferlen, uint8_t sender)
+{
+	buffer[bufferlen] = 0;
+	if (!strncmp((char*) buffer, "PBTEST", 6)) {
+		send_reply();
+	}
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
+{
+	/* Receive byte from uart */
+	rx_timeout = 10;
+	dbg_uart.rx_buffer[0xFF & dbg_uart.rx_ptr_in] = tmp_rx;
+	dbg_uart.rx_ptr_in++;
+	HAL_UART_Receive_IT(&huart6, (uint8_t*) &tmp_rx, 1);
+}
+
+
+int __io_putchar(int ch)
+{
+	HAL_UART_Transmit(&huart6, (uint8_t*) &ch, 1, 10);
+	return ch;
+}
 /* USER CODE END 4 */
 
 /**

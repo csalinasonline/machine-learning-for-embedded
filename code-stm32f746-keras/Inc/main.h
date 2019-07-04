@@ -37,7 +37,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+extern __IO uint32_t glb_tmr_1ms;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

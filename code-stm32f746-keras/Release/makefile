@@ -29,7 +29,10 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: stm32f746-code-keras.elf
+all: pre-build main-build
+
+# Main-build Target
+main-build: stm32f746-code-keras.elf
 
 # Tool invocations
 stm32f746-code-keras.elf: $(OBJS) $(USER_OBJS) ../STM32F746NGHx_FLASH.ld
@@ -45,6 +48,11 @@ clean:
 	-$(RM) *
 	-@echo ' '
 
+pre-build:
+	-@echo 'Create nanopb files for C and Python'
+	-NANOPB_PATH=../proto_files ../proto_files/create-files.sh
+	-@echo ' '
+
 post-build:
 	-@echo 'Generating hex and Printing size information:'
 	arm-none-eabi-objcopy -O binary "stm32f746-code-keras.elf" "stm32f746-code-keras.bin"
@@ -52,6 +60,6 @@ post-build:
 	-@echo ' '
 
 .PHONY: all clean dependents
-.SECONDARY: post-build
+.SECONDARY: main-build pre-build post-build
 
 -include ../makefile.targets

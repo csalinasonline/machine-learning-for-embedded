@@ -1,0 +1,2 @@
+MnistDigitPredictRequest.buffer     max_size:1024
+MnistDigitPredictResponse.resp      max_size:100

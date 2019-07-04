@@ -1,0 +1,17 @@
+// This defines protocol for a simple server that lists files.
+//
+// See also the nanopb-specific options in fileproto.options.
+
+syntax = "proto2";
+
+message MnistDigitPredictRequest {
+    required bytes buffer = 1;
+}
+
+message MnistDigitPredictResponse {
+    required uint32 found_digit = 1;
+    required uint32 exec_time = 2;
+    required bytes resp = 3;
+}
+
+
