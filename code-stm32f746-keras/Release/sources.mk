@@ -17,6 +17,8 @@ C_DEPS :=
 SUBDIRS := \
 Drivers/CMSIS/DSP/Source/BasicMathFunctions \
 Drivers/STM32F7xx_HAL_Driver/Src \
+Middlewares/ST/AI/AI/data \
+Middlewares/ST/AI/AI/src \
 Src \
 startup \
 

@@ -10,6 +10,8 @@ RM := rm -rf
 -include sources.mk
 -include startup/subdir.mk
 -include Src/subdir.mk
+-include Middlewares/ST/AI/AI/src/subdir.mk
+-include Middlewares/ST/AI/AI/data/subdir.mk
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Drivers/CMSIS/DSP/Source/BasicMathFunctions/subdir.mk
 -include subdir.mk
@@ -38,7 +40,7 @@ main-build: stm32f746-code-keras.elf
 stm32f746-code-keras.elf: $(OBJS) $(USER_OBJS) ../STM32F746NGHx_FLASH.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -L"/rnd/DL/machine-learning-for-embedded/code-stm32f746-keras/Middlewares/ST/AI/AI/lib"  -specs=nosys.specs -specs=nano.specs -T"../STM32F746NGHx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "stm32f746-code-keras.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
+	arm-none-eabi-gcc -mcpu=cortex-m7 -mthumb -mfloat-abi=hard -mfpu=fpv5-sp-d16 -L"/rnd/bitbucket/machine-learning-for-embedded/code-stm32f746-keras/Middlewares/ST/AI/AI/lib"  -specs=nosys.specs -specs=nano.specs -T"../STM32F746NGHx_FLASH.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "stm32f746-code-keras.elf" @"objects.list" $(USER_OBJS) $(LIBS) -lm
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

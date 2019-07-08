@@ -19,22 +19,53 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='mnist_predict.proto',
   package='',
   syntax='proto2',
-  serialized_pb=_b('\n\x13mnist_predict.proto\"*\n\x18MnistDigitPredictRequest\x12\x0e\n\x06\x62uffer\x18\x01 \x02(\x0c\"Q\n\x19MnistDigitPredictResponse\x12\x13\n\x0b\x66ound_digit\x18\x01 \x02(\r\x12\x11\n\texec_time\x18\x02 \x02(\r\x12\x0c\n\x04resp\x18\x03 \x02(\x0c')
+  serialized_pb=_b('\n\x13mnist_predict.proto\"!\n\x0epb_msg_version\x12\x0f\n\x07version\x18\x01 \x02(\r\"$\n\x12pb_msg_predict_req\x12\x0e\n\x06\x62uffer\x18\x01 \x02(\x0c\"K\n\x13pb_msg_predict_resp\x12\x13\n\x0b\x66ound_digit\x18\x01 \x02(\r\x12\x11\n\texec_time\x18\x02 \x02(\r\x12\x0c\n\x04resp\x18\x03 \x02(\x0c')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
 
 
-_MNISTDIGITPREDICTREQUEST = _descriptor.Descriptor(
-  name='MnistDigitPredictRequest',
-  full_name='MnistDigitPredictRequest',
+_PB_MSG_VERSION = _descriptor.Descriptor(
+  name='pb_msg_version',
+  full_name='pb_msg_version',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='buffer', full_name='MnistDigitPredictRequest.buffer', index=0,
+      name='version', full_name='pb_msg_version.version', index=0,
+      number=1, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto2',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=23,
+  serialized_end=56,
+)
+
+
+_PB_MSG_PREDICT_REQ = _descriptor.Descriptor(
+  name='pb_msg_predict_req',
+  full_name='pb_msg_predict_req',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='buffer', full_name='pb_msg_predict_req.buffer', index=0,
       number=1, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
@@ -52,34 +83,34 @@ _MNISTDIGITPREDICTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=23,
-  serialized_end=65,
+  serialized_start=58,
+  serialized_end=94,
 )
 
 
-_MNISTDIGITPREDICTRESPONSE = _descriptor.Descriptor(
-  name='MnistDigitPredictResponse',
-  full_name='MnistDigitPredictResponse',
+_PB_MSG_PREDICT_RESP = _descriptor.Descriptor(
+  name='pb_msg_predict_resp',
+  full_name='pb_msg_predict_resp',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='found_digit', full_name='MnistDigitPredictResponse.found_digit', index=0,
+      name='found_digit', full_name='pb_msg_predict_resp.found_digit', index=0,
       number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='exec_time', full_name='MnistDigitPredictResponse.exec_time', index=1,
+      name='exec_time', full_name='pb_msg_predict_resp.exec_time', index=1,
       number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='resp', full_name='MnistDigitPredictResponse.resp', index=2,
+      name='resp', full_name='pb_msg_predict_resp.resp', index=2,
       number=3, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
@@ -97,26 +128,34 @@ _MNISTDIGITPREDICTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=67,
-  serialized_end=148,
+  serialized_start=96,
+  serialized_end=171,
 )
 
-DESCRIPTOR.message_types_by_name['MnistDigitPredictRequest'] = _MNISTDIGITPREDICTREQUEST
-DESCRIPTOR.message_types_by_name['MnistDigitPredictResponse'] = _MNISTDIGITPREDICTRESPONSE
+DESCRIPTOR.message_types_by_name['pb_msg_version'] = _PB_MSG_VERSION
+DESCRIPTOR.message_types_by_name['pb_msg_predict_req'] = _PB_MSG_PREDICT_REQ
+DESCRIPTOR.message_types_by_name['pb_msg_predict_resp'] = _PB_MSG_PREDICT_RESP
 
-MnistDigitPredictRequest = _reflection.GeneratedProtocolMessageType('MnistDigitPredictRequest', (_message.Message,), dict(
-  DESCRIPTOR = _MNISTDIGITPREDICTREQUEST,
+pb_msg_version = _reflection.GeneratedProtocolMessageType('pb_msg_version', (_message.Message,), dict(
+  DESCRIPTOR = _PB_MSG_VERSION,
   __module__ = 'mnist_predict_pb2'
-  # @@protoc_insertion_point(class_scope:MnistDigitPredictRequest)
+  # @@protoc_insertion_point(class_scope:pb_msg_version)
   ))
-_sym_db.RegisterMessage(MnistDigitPredictRequest)
+_sym_db.RegisterMessage(pb_msg_version)
 
-MnistDigitPredictResponse = _reflection.GeneratedProtocolMessageType('MnistDigitPredictResponse', (_message.Message,), dict(
-  DESCRIPTOR = _MNISTDIGITPREDICTRESPONSE,
+pb_msg_predict_req = _reflection.GeneratedProtocolMessageType('pb_msg_predict_req', (_message.Message,), dict(
+  DESCRIPTOR = _PB_MSG_PREDICT_REQ,
   __module__ = 'mnist_predict_pb2'
-  # @@protoc_insertion_point(class_scope:MnistDigitPredictResponse)
+  # @@protoc_insertion_point(class_scope:pb_msg_predict_req)
   ))
-_sym_db.RegisterMessage(MnistDigitPredictResponse)
+_sym_db.RegisterMessage(pb_msg_predict_req)
+
+pb_msg_predict_resp = _reflection.GeneratedProtocolMessageType('pb_msg_predict_resp', (_message.Message,), dict(
+  DESCRIPTOR = _PB_MSG_PREDICT_RESP,
+  __module__ = 'mnist_predict_pb2'
+  # @@protoc_insertion_point(class_scope:pb_msg_predict_resp)
+  ))
+_sym_db.RegisterMessage(pb_msg_predict_resp)
 
 
 # @@protoc_insertion_point(module_scope)

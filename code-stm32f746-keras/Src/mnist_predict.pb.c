@@ -8,10 +8,13 @@
 #error Regenerate this file with the current version of nanopb generator.
 #endif
 
-PB_BIND(MnistDigitPredictRequest, MnistDigitPredictRequest, 2)
+PB_BIND(pb_msg_version, pb_msg_version, AUTO)
 
 
-PB_BIND(MnistDigitPredictResponse, MnistDigitPredictResponse, AUTO)
+PB_BIND(pb_msg_predict_req, pb_msg_predict_req, 2)
+
+
+PB_BIND(pb_msg_predict_resp, pb_msg_predict_resp, AUTO)
 
 
 

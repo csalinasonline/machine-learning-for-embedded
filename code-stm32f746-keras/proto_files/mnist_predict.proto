@@ -4,11 +4,15 @@
 
 syntax = "proto2";
 
-message MnistDigitPredictRequest {
+message pb_msg_version {
+    required uint32 version = 1;
+}
+
+message pb_msg_predict_req {
     required bytes buffer = 1;
 }
 
-message MnistDigitPredictResponse {
+message pb_msg_predict_resp {
     required uint32 found_digit = 1;
     required uint32 exec_time = 2;
     required bytes resp = 3;

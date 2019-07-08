@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 #include "main.h"
+#include "network_data.h"
 #include "app_x-cube-ai.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -49,6 +50,14 @@ struct tp_resp {
 
 #define DEBUG_PORT GPIOG
 #define DEBUG_PIN GPIO_PIN_7
+
+#define PROJ_VERSION 100
+
+#define AI_BUFFER_NULL(ptr_)  AI_BUFFER_OBJ_INIT( \
+		AI_BUFFER_FORMAT_NONE|AI_BUFFER_FMT_FLAG_CONST, \
+		0, 0, 0, 0, \
+		AI_HANDLE_PTR(ptr_))
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -80,6 +89,12 @@ struct obj_timer_t * benchmark_timer;
 /* Create the list head for the timer */
 static LIST_HEAD(obj_timer_list);
 
+/* output and input streams for nanopb */
+pb_ostream_t ostream;
+pb_istream_t istream;
+
+ai_handle network;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,13 +109,77 @@ void dbg_uart_parser(uint8_t *buffer, size_t bufferlen, uint8_t sender);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static inline int send_reply()
+
+static inline void pb_send_stream(pb_ostream_t * s)
+{
+	HAL_UART_Transmit(&huart6, tx_buffer, s->bytes_written, 100);
+	s->bytes_written = 0;
+}
+
+static inline void pb_send_version()
+{
+	pb_msg_version msg = pb_msg_version_init_zero;
+
+	msg.version = PROJ_VERSION;
+
+	if (pb_encode(&ostream, pb_msg_version_fields, &msg)) {
+		pb_send_stream(&ostream);
+//		TRACE(("OK\n"));
+	}
+	else {
+		TRACE(("Failed to encode\n"));
+	}
+
+}
+
+static inline void pb_recv_digit()
+{
+	pb_msg_predict_req msg = pb_msg_predict_req_init_zero;
+
+//	memcpy(msg.buffer.bytes, dbg_uart.rx_buffer, dbg_uart.rx_ptr_in);
+//	msg.buffer.size = dbg_uart.rx_ptr_in;
+
+	TRACE(("Received: %d bytes\n", dbg_uart.rx_ptr_in));
+
+	bool status = pb_decode(&istream, pb_msg_predict_req_fields, &msg);
+	if (!status) {
+		TRACE(("Failed to decode.\n"));
+	}
+	else {
+		TRACE(("Decoded...\n"));
+	}
+
+    ai_buffer ai_input[1];
+    ai_buffer ai_output[1];
+
+    ai_input[0].n_batches  = 1;
+    ai_input[0].data = AI_HANDLE_PTR(dbg_uart.rx_buffer);
+    ai_output[0].n_batches = 1;
+    ai_output[0].data = AI_HANDLE_PTR(dbg_uart.tx_buffer);
+
+	ai_i32 resp = ai_network_run(network,
+			ai_input,
+			ai_output);
+	if (resp <= 0) {
+		TRACE(("Failed: ai_network_run\n"));
+	}
+	else {
+		TRACE(("AI RUN, OK: %lu\n", resp));
+		for (int i=0; i<resp; i++) {
+			TRACE(("%02X,", tx_buffer[i]));
+		}
+		TRACE(("\n"));
+	}
+
+}
+
+static inline int pb_send_reply()
 {
 	int ret = 0;
 
 	struct tp_resp resp;
 
-	MnistDigitPredictResponse msg = MnistDigitPredictResponse_init_zero;
+	pb_msg_predict_resp msg = pb_msg_predict_resp_init_zero;
 //	for (int i=0; i<10; i++) {
 //		resp.digits[i] = 0.1234 + i;
 //		TRACE(("Number: %f\n", resp.digits[i]));
@@ -117,7 +196,7 @@ static inline int send_reply()
 //	}
 
 	pb_ostream_t stream = pb_ostream_from_buffer((pb_byte_t*) tx_buffer, TX_BUFFER_SIZE);
-	bool status = pb_encode(&stream, MnistDigitPredictResponse_fields, &msg);
+	bool status = pb_encode(&stream, pb_msg_predict_resp_fields, &msg);
 	if (!status) {
 		TRACE(("Failed to encode\n"));
 		return EXIT_FAILURE;
@@ -132,6 +211,20 @@ static inline int send_reply()
 //	TRACE(("PB data:\n"));
 	HAL_UART_Transmit(&huart6, tx_buffer, stream.bytes_written, 100);
 	return ret;
+}
+
+void dbg_uart_parser(uint8_t *buffer, size_t bufferlen, uint8_t sender)
+{
+	if (!strncmp((char*) buffer, "PBTEST1", 7)) {
+		pb_send_version();
+	}
+	else if (!strncmp((char*) buffer, "PBTEST2", 7)) {
+		pb_recv_digit();
+	}
+	/* try decode nanopb messages */
+	else {
+		pb_recv_digit();
+	}
 }
 
 
@@ -158,7 +251,7 @@ void main_loop()
 		if (rx_timeout == 1) {
 			rx_timeout = 0;
 			dbg_uart.rx_buffer[dbg_uart.rx_ptr_in] = 0; // terminate string
-			TRACE(("Received: %s\n", dbg_uart.rx_buffer));
+//			TRACE(("Received: %s\n", dbg_uart.rx_buffer));
 			dbg_uart_parser(dbg_uart.rx_buffer, dbg_uart.rx_ptr_in, 0);
 			dbg_uart.rx_ptr_in = 0;
 		}
@@ -214,11 +307,42 @@ int main(void)
 
 	/* Init debug pin */
 	debug_pin_init();
+
+	ostream = pb_ostream_from_buffer((pb_byte_t*) tx_buffer, TX_BUFFER_SIZE);
+	istream = pb_istream_from_buffer((pb_byte_t*) rx_buffer, RX_BUFFER_SIZE);
+
   /* USER CODE END 2 */
   printf("Program started\n");
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  	// Initialize the network
+
+    AI_ALIGNED(4)
+    static ai_u8 activations[AI_MNETWORK_DATA_ACTIVATIONS_SIZE];
+
+//    static ai_float in_data[AI_MNETWORK_IN_1_SIZE];
+//    static ai_float out_data[AI_MNETWORK_OUT_1_SIZE];
+
+    ai_error err = ai_mnetwork_create(AI_NETWORK_MODEL_NAME, &network, NULL);
+	if (err.type) {
+		TRACE(("Error: ai_mnetwork_create\n"));
+	}
+	else {
+		TRACE(("Network '%s' created...\n", AI_NETWORK_MODEL_NAME));
+	}
+
+	const ai_network_params params = {
+	            AI_BUFFER_NULL(NULL),
+	            AI_BUFFER_NULL(activations) };
+
+	if (!ai_mnetwork_init(network, &params)) {
+		TRACE(("Error: ai_mnetwork_init\n"));
+	}
+	else {
+		TRACE(("Network initialized...\n"));
+	}
+
   while (1)
   {
     /* USER CODE END WHILE */
@@ -386,18 +510,10 @@ static void debug_pin_init(void)
 
 }
 
-void dbg_uart_parser(uint8_t *buffer, size_t bufferlen, uint8_t sender)
-{
-	buffer[bufferlen] = 0;
-	if (!strncmp((char*) buffer, "PBTEST", 6)) {
-		send_reply();
-	}
-}
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
 	/* Receive byte from uart */
-	rx_timeout = 10;
+	rx_timeout = 100;
 	dbg_uart.rx_buffer[0xFF & dbg_uart.rx_ptr_in] = tmp_rx;
 	dbg_uart.rx_ptr_in++;
 	HAL_UART_Receive_IT(&huart6, (uint8_t*) &tmp_rx, 1);

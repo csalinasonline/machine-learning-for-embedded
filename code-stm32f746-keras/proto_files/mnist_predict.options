@@ -1,2 +1,2 @@
-MnistDigitPredictRequest.buffer     max_size:1024
-MnistDigitPredictResponse.resp      max_size:100
+pb_msg_predict_req.buffer     max_size:1024
+pb_msg_predict_resp.resp      max_size:100
