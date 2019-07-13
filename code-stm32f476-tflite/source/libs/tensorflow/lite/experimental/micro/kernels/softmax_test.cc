@@ -13,12 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "builtin_op_data.h"
-#include "c_api_internal.h"
-#include "kernels/all_ops_resolver.h"
-#include "simple_tensor_allocator.h"
-#include "testing/micro_test.h"
-#include "testing/test_utils.h"
+#include "tensorflow/lite/c/builtin_op_data.h"
+#include "tensorflow/lite/c/c_api_internal.h"
+#include "tensorflow/lite/experimental/micro/kernels/all_ops_resolver.h"
+#include "tensorflow/lite/experimental/micro/simple_tensor_allocator.h"
+#include "tensorflow/lite/experimental/micro/testing/micro_test.h"
+#include "tensorflow/lite/experimental/micro/testing/test_utils.h"
 
 namespace tflite {
 namespace testing {

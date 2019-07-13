@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "op_resolver.h"
+#include "tensorflow/lite/core/api/op_resolver.h"
 
 namespace tflite {
 
@@ -48,9 +48,8 @@ TfLiteStatus GetRegistrationFromOpCode(
     const char* name = opcode->custom_code()->c_str();
     *registration = op_resolver.FindOp(name, version);
     if (*registration == nullptr) {
-      error_reporter->Report(
-          "Didn't find custom op for name '%s' with version %d\n", name,
-          version);
+      // Do not report error for unresolved custom op, we do the final check
+      // while preparing ops.
       status = kTfLiteError;
     }
   }

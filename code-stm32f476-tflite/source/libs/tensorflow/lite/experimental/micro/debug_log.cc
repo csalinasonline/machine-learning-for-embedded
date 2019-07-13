@@ -13,17 +13,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include <stdio.h>
-#include "debug_log.h"
+// Reference implementation of the DebugLog() function that's required for a
+// platform to support the TensorFlow Lite for Microcontrollers library. This is
+// the only function that's absolutely required to be available on a target
+// device, since it's used for communicating test results back to the host so
+// that we can verify the implementation is working correctly.
+// It's designed to be as easy as possible to supply an implementation though.
+// On platforms that have a POSIX stack or C library, it can be written as a
+// single call to `fprintf(stderr, "%s", s)` to output a string to the error
+// stream of the console, but if there's no OS or C library available, there's
+// almost always an equivalent way to write out a string to some serial
+// interface that can be used instead. For example on Arm M-series MCUs, calling
+// the `bkpt #0xAB` assembler instruction will output the string in r1 to
+// whatever debug serial connection is available. If you're running mbed, you
+// can do the same by creating `Serial pc(USBTX, USBRX)` and then calling
+// `pc.printf("%s", s)`.
+// To add an equivalent function for your own platform, create your own
+// implementation file, and place it in a subfolder with named after the OS
+// you're targeting. For example, see the Cortex M bare metal version in
+// tensorflow/lite/experimental/micro/bluepill/debug_log.cc or the mbed one on
+// tensorflow/lite/experimental/micro/mbed/debug_log.cc.
 
-// For Arm Cortex-M devices, calling SYS_WRITE0 will output the zero-terminated
-// string pointed to by R1 to any debug console that's attached to the system.
-extern "C" void DebugLog(const char* s) {
-  // asm("mov r0, #0x04\n"  // SYS_WRITE0
-  //     "mov r1, %[str]\n"
-  //     "bkpt #0xAB\n"
-  //     :
-  //     : [ str ] "r"(s)
-  //     : "r0", "r1");
-  printf("%s\n", s);
-}
+#include "tensorflow/lite/experimental/micro/debug_log.h"
+
+#include <cstdio>
+
+extern "C" void DebugLog(const char* s) { fprintf(stderr, "%s", s); }

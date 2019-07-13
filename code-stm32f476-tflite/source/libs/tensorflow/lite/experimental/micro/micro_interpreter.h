@@ -15,11 +15,11 @@ limitations under the License.
 #ifndef TENSORFLOW_LITE_EXPERIMENTAL_MICRO_MICRO_INTERPRETER_H_
 #define TENSORFLOW_LITE_EXPERIMENTAL_MICRO_MICRO_INTERPRETER_H_
 
-#include "c_api_internal.h"
-#include "error_reporter.h"
-#include "op_resolver.h"
-#include "simple_tensor_allocator.h"
-#include "schema_generated.h"
+#include "tensorflow/lite/c/c_api_internal.h"
+#include "tensorflow/lite/core/api/error_reporter.h"
+#include "tensorflow/lite/core/api/op_resolver.h"
+#include "tensorflow/lite/experimental/micro/simple_tensor_allocator.h"
+#include "tensorflow/lite/schema/schema_generated.h"
 
 namespace tflite {
 
@@ -53,6 +53,9 @@ class MicroInterpreter {
   ErrorReporter* error_reporter() { return error_reporter_; }
 
  private:
+  TfLiteStatus AllocateInputAndActTensors();
+  TfLiteStatus AllocateTemporaryTensors();
+
   const Model* model_;
   const OpResolver& op_resolver_;
   SimpleTensorAllocator* tensor_allocator_;

@@ -13,9 +13,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "simple_tensor_allocator.h"
+#include "tensorflow/lite/experimental/micro/simple_tensor_allocator.h"
 
-#include "flatbuffer_conversions.h"
+#include "tensorflow/lite/core/api/flatbuffer_conversions.h"
 
 namespace tflite {
 namespace {
@@ -101,7 +101,7 @@ TfLiteStatus SimpleTensorAllocator::AllocateTensor(
     result->allocation_type = kTfLiteMmapRo;
   } else {
     int data_size = 1;
-    for (flatbuffers::uoffset_t n = 0; n < flatbuffer_tensor.shape()->Length(); ++n) {
+    for (int n = 0; n < flatbuffer_tensor.shape()->Length(); ++n) {
       data_size *= flatbuffer_tensor.shape()->Get(n);
     }
     size_t type_size;
@@ -126,13 +126,16 @@ TfLiteStatus SimpleTensorAllocator::AllocateTensor(
   result->dims = reinterpret_cast<TfLiteIntArray*>(AllocateMemory(
       sizeof(int) * (flatbuffer_tensor.shape()->Length() + 1), sizeof(int)));
   result->dims->size = flatbuffer_tensor.shape()->Length();
-  for (flatbuffers::uoffset_t n = 0; n < flatbuffer_tensor.shape()->Length(); ++n) {
+  for (int n = 0; n < flatbuffer_tensor.shape()->Length(); ++n) {
     result->dims->data[n] = flatbuffer_tensor.shape()->Get(n);
   }
-  if (flatbuffer_tensor.quantization()) {
-    result->params.scale = flatbuffer_tensor.quantization()->scale()->Get(0);
-    result->params.zero_point =
-        flatbuffer_tensor.quantization()->zero_point()->Get(0);
+  const auto* src_quantization = flatbuffer_tensor.quantization();
+  if (src_quantization && src_quantization->scale() &&
+      (src_quantization->scale()->size() > 0) &&
+      src_quantization->zero_point() &&
+      (src_quantization->zero_point()->size() > 0)) {
+    result->params.scale = src_quantization->scale()->Get(0);
+    result->params.zero_point = src_quantization->zero_point()->Get(0);
   }
   result->allocation = nullptr;
   if (flatbuffer_tensor.name()) {
@@ -151,7 +154,7 @@ uint8_t* SimpleTensorAllocator::AllocateMemory(size_t size, size_t alignment) {
   uint8_t* aligned_result = AlignPointerRoundUp(current_data, alignment);
   uint8_t* next_free = aligned_result + size;
   size_t aligned_size = (next_free - current_data);
-  if ((data_size_ + aligned_size) > (size_t) data_size_max_) {
+  if ((data_size_ + aligned_size) > data_size_max_) {
     // TODO(petewarden): Add error reporting beyond returning null!
     return nullptr;
   }

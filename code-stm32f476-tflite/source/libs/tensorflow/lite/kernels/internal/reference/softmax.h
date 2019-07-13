@@ -15,12 +15,12 @@ limitations under the License.
 #ifndef TENSORFLOW_LITE_KERNELS_INTERNAL_REFERENCE_SOFTMAX_H_
 #define TENSORFLOW_LITE_KERNELS_INTERNAL_REFERENCE_SOFTMAX_H_
 
-#include "fixedpoint.h"
-#include "common.h"
-#include "quantization_util.h"
-#include "round.h"
-#include "types.h"
-#include "op_macros.h"
+#include "fixedpoint/fixedpoint.h"
+#include "tensorflow/lite/kernels/internal/common.h"
+#include "tensorflow/lite/kernels/internal/quantization_util.h"
+#include "tensorflow/lite/kernels/internal/round.h"
+#include "tensorflow/lite/kernels/internal/types.h"
+#include "tensorflow/lite/kernels/op_macros.h"
 
 namespace tflite {
 namespace reference_ops {

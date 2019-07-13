@@ -13,13 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "fully_connected.h"
-#include "builtin_op_data.h"
-#include "c_api_internal.h"
-#include "common.h"
-#include "quantization_util.h"
-#include "tensor_ctypes.h"
-#include "kernel_util.h"
+#include "tensorflow/lite/kernels/internal/reference/fully_connected.h"
+#include "tensorflow/lite/c/builtin_op_data.h"
+#include "tensorflow/lite/c/c_api_internal.h"
+#include "tensorflow/lite/kernels/internal/common.h"
+#include "tensorflow/lite/kernels/internal/quantization_util.h"
+#include "tensorflow/lite/kernels/internal/tensor_ctypes.h"
+#include "tensorflow/lite/kernels/kernel_util.h"
 
 namespace tflite {
 namespace ops {
@@ -102,8 +102,7 @@ TfLiteStatus EvalQuantized(TfLiteContext* context, TfLiteNode* node,
       op_params, GetTensorShape(input), GetTensorData<uint8_t>(input), \
       GetTensorShape(filter), GetTensorData<uint8_t>(filter),          \
       GetTensorShape(bias), GetTensorData<int32_t>(bias),              \
-      GetTensorShape(output), GetTensorData<output_data_type>(output), \
-      nullptr)
+      GetTensorShape(output), GetTensorData<output_data_type>(output))
   switch (output->type) {
     case kTfLiteUInt8:
       TF_LITE_FULLY_CONNECTED(uint8_t);

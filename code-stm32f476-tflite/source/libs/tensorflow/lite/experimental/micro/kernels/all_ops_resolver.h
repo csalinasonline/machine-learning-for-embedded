@@ -12,8 +12,8 @@ limitations under the License.
 #ifndef TENSORFLOW_LITE_EXPERIMENTAL_MICRO_KERNELS_ALL_OPS_RESOLVER_H_
 #define TENSORFLOW_LITE_EXPERIMENTAL_MICRO_KERNELS_ALL_OPS_RESOLVER_H_
 
-#include "compatibility.h"
-#include "micro_mutable_op_resolver.h"
+#include "tensorflow/lite/experimental/micro/compatibility.h"
+#include "tensorflow/lite/experimental/micro/micro_mutable_op_resolver.h"
 
 namespace tflite {
 namespace ops {

@@ -19,9 +19,9 @@ limitations under the License.
 // of DebugLog() and then get the numerical variations without requiring any
 // more code.
 
-#include "debug_log_numbers.h"
+#include "tensorflow/lite/experimental/micro/debug_log_numbers.h"
 
-#include "debug_log.h"
+#include "tensorflow/lite/experimental/micro/debug_log.h"
 
 namespace {
 

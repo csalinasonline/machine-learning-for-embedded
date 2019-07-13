@@ -15,8 +15,8 @@ limitations under the License.
 #ifndef TENSORFLOW_LITE_EXPERIMENTAL_MICRO_MICRO_MUTABLE_OP_RESOLVER_H_
 #define TENSORFLOW_LITE_EXPERIMENTAL_MICRO_MICRO_MUTABLE_OP_RESOLVER_H_
 
-#include "op_resolver.h"
-#include "compatibility.h"
+#include "tensorflow/lite/core/api/op_resolver.h"
+#include "tensorflow/lite/experimental/micro/compatibility.h"
 
 #ifndef TFLITE_REGISTRATIONS_MAX
 #define TFLITE_REGISTRATIONS_MAX (128)

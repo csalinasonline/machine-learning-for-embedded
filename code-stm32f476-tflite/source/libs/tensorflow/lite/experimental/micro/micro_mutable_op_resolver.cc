@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "micro_mutable_op_resolver.h"
+#include "tensorflow/lite/experimental/micro/micro_mutable_op_resolver.h"
 
 namespace tflite {
 

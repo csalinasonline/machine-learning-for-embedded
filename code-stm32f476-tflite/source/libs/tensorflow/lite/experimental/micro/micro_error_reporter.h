@@ -15,10 +15,10 @@ limitations under the License.
 #ifndef TENSORFLOW_LITE_EXPERIMENTAL_MICRO_MICRO_ERROR_REPORTER_H_
 #define TENSORFLOW_LITE_EXPERIMENTAL_MICRO_MICRO_ERROR_REPORTER_H_
 
-#include "error_reporter.h"
-#include "compatibility.h"
-#include "debug_log.h"
-#include "debug_log_numbers.h"
+#include "tensorflow/lite/core/api/error_reporter.h"
+#include "tensorflow/lite/experimental/micro/compatibility.h"
+#include "tensorflow/lite/experimental/micro/debug_log.h"
+#include "tensorflow/lite/experimental/micro/debug_log_numbers.h"
 
 namespace tflite {
 

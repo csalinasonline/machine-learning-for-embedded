@@ -15,8 +15,8 @@ limitations under the License.
 #ifndef TENSORFLOW_LITE_KERNELS_INTERNAL_TENSOR_CTYPES_H_
 #define TENSORFLOW_LITE_KERNELS_INTERNAL_TENSOR_CTYPES_H_
 
-#include "c_api_internal.h"
-#include "types.h"
+#include "tensorflow/lite/c/c_api_internal.h"
+#include "tensorflow/lite/kernels/internal/types.h"
 
 namespace tflite {
 
@@ -40,7 +40,7 @@ inline int16_t* GetTensorData(TfLiteTensor* tensor) {
 
 template <>
 inline int32_t* GetTensorData(TfLiteTensor* tensor) {
-  return tensor != nullptr ? (int32_t*) tensor->data.i32 : nullptr;
+  return tensor != nullptr ? tensor->data.i32 : nullptr;
 }
 
 template <>
@@ -67,6 +67,11 @@ inline const float* GetTensorData(const TfLiteTensor* tensor) {
 }
 
 template <>
+inline const TfLiteFloat16* GetTensorData(const TfLiteTensor* tensor) {
+  return tensor != nullptr ? tensor->data.f16 : nullptr;
+}
+
+template <>
 inline const uint8_t* GetTensorData(const TfLiteTensor* tensor) {
   return tensor != nullptr ? tensor->data.uint8 : nullptr;
 }
@@ -83,7 +88,7 @@ inline const int16_t* GetTensorData(const TfLiteTensor* tensor) {
 
 template <>
 inline const int32_t* GetTensorData(const TfLiteTensor* tensor) {
-  return tensor != nullptr ? (int32_t*) tensor->data.i32 : nullptr;
+  return tensor != nullptr ? tensor->data.i32 : nullptr;
 }
 
 template <>
@@ -103,7 +108,8 @@ inline RuntimeShape GetTensorShape(const TfLiteTensor* tensor) {
 
   TfLiteIntArray* dims = tensor->dims;
   const int dims_size = dims->size;
-  const int32_t* dims_data = (const int32_t*) dims->data;
+  // C-style cast so this can be included in pure C code.
+  const int32_t* dims_data = (const int32_t*)(dims->data);
   return RuntimeShape(dims_size, dims_data);
 }
 
