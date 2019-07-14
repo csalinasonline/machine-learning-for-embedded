@@ -180,7 +180,7 @@ int main(void)
 
   // Create an area of memory to use for input, output, and intermediate arrays.
   // Finding the minimum value for your model may require some trial and error.
-  const int tensor_arena_size = 32768 * 2 + 1024; //2 * 512;
+  const int tensor_arena_size = 262144; //2 * 512;
   uint8_t tensor_arena[tensor_arena_size];
   tflite::SimpleTensorAllocator tensor_allocator(tensor_arena,
                                                  tensor_arena_size);
@@ -192,6 +192,8 @@ int main(void)
   // Obtain pointers to the model's input and output tensors
   TfLiteTensor* input = interpreter.input(0);
   TfLiteTensor* output = interpreter.output(0);
+
+  //input->data.f
 
   // Keep track of how many inferences we have performed
   int inference_count = 0;

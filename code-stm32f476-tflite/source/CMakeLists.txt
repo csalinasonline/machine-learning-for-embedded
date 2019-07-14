@@ -71,7 +71,9 @@ set (CMAKE_C_FLAGS "-g -mthumb -fno-builtin -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -m
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lm -lc -lnosys --specs=nosys.specs -DUSE_HAL_DRIVER -DSTM32F746xx")
 # CXXFLAGS
 set (CMAKE_CXX_FLAGS "-g -mthumb -fno-builtin -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=softfp -Wall -std=c++11 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize" CACHE INTERNAL "cxx compiler flags")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-rtti -s")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lm -lc -lnosys --specs=nosys.specs")
+
 # ASMFLAGS
 set (CMAKE_ASM_FLAGS "-g -mthumb -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mfloat-abi=softfp" CACHE INTERNAL "asm compiler flags")
 # LDFLAGS

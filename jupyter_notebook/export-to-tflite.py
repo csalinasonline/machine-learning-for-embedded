@@ -4,10 +4,10 @@ import os, sys
 def export(model_name, micro=False):
     converter = tf.lite.TFLiteConverter.from_keras_model_file(model_name)
     if micro:
-        converter.inference_type = tf.lite.constants.QUANTIZED_UINT8
-        input_arrays = converter.get_input_arrays()
-        converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
-        # converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+        # converter.inference_type = tf.lite.constants.QUANTIZED_UINT8
+        # input_arrays = converter.get_input_arrays()
+        # converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
+        converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
     tflite_model = converter.convert()
     new_fname = os.path.splitext(model_name)[0] + '.tflite'
     open(new_fname, 'wb').write(tflite_model)

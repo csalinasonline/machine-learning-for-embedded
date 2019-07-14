@@ -22,6 +22,7 @@ namespace {
 
 TfLiteStatus TfLiteTypeSizeOf(TfLiteType type, size_t* size,
                               ErrorReporter* reporter) {
+  reporter->Report("Data type: %d", type);
   switch (type) {
     case kTfLiteFloat32:
       *size = sizeof(float);
@@ -110,6 +111,7 @@ TfLiteStatus SimpleTensorAllocator::AllocateTensor(
                                         error_reporter));
     result->data.raw =
         reinterpret_cast<char*>(AllocateMemory(result->bytes, type_size));
+    error_reporter->Report("%s: %d bytes", flatbuffer_tensor.name()->c_str(), result->bytes);
     if (result->data.raw == nullptr) {
       const char* tensor_name = flatbuffer_tensor.name()->c_str();
       if (tensor_name == nullptr) {

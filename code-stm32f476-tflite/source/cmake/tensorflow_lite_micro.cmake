@@ -52,7 +52,7 @@ set(TENSORFLOW_LITE_SRC
 #     PROPERTIES COMPILE_FLAGS "${STM32F7_DEFINES} -Wno-fpermissive"
 # )
 
-string(REPLACE "-Wall" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+
 
 add_library(Tensorflow_lite_micro STATIC ${TENSORFLOW_LITE_SRC})
 
