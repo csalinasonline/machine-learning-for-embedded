@@ -13,14 +13,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "softmax.h"
-#include "builtin_op_data.h"
-#include "c_api_internal.h"
-#include "common.h"
-#include "quantization_util.h"
-#include "tensor_ctypes.h"
-#include "kernel_util.h"
-#include "op_macros.h"
+#include "kernels/internal/reference/softmax.h"
+#include "c/builtin_op_data.h"
+#include "c/c_api_internal.h"
+#include "kernels/internal/common.h"
+#include "kernels/internal/quantization_util.h"
+#include "kernels/internal/tensor_ctypes.h"
+#include "kernels/kernel_util.h"
+#include "kernels/op_macros.h"
 
 namespace tflite {
 namespace ops {

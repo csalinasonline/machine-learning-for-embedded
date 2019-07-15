@@ -6,7 +6,7 @@
 #include <clocale>
 #include <string>
 
-#include "flatbuffers/idl.h"
+#include "idl.h"
 #include "test_init.h"
 
 static constexpr uint8_t flags_strict_json = 0x01;

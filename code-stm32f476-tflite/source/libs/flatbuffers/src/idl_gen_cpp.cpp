@@ -16,10 +16,10 @@
 
 // independent from idl_parser, since this code is not needed for most clients
 
-#include "flatbuffers/code_generators.h"
-#include "flatbuffers/flatbuffers.h"
-#include "flatbuffers/idl.h"
-#include "flatbuffers/util.h"
+#include "code_generators.h"
+#include "flatbuffers.h"
+#include "idl.h"
+#include "util.h"
 
 #include <unordered_set>
 

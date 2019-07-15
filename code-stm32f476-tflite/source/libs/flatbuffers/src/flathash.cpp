@@ -18,7 +18,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "flatbuffers/hash.h"
+#include "hash.h"
 
 enum OutputFormat { kDecimal, kHexadecimal, kHexadecimal0x };
 

@@ -32,8 +32,8 @@
 #endif
 // clang-format on
 
-#include "flatbuffers/base.h"
-#include "flatbuffers/util.h"
+#include "base.h"
+#include "util.h"
 
 #include <sys/stat.h>
 #include <clocale>

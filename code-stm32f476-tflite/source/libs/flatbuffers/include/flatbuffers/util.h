@@ -17,7 +17,7 @@
 #ifndef FLATBUFFERS_UTIL_H_
 #define FLATBUFFERS_UTIL_H_
 
-#include "flatbuffers/base.h"
+#include "base.h"
 
 #include <errno.h>
 

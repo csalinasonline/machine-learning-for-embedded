@@ -5,7 +5,7 @@
 #define GRPC_monster_5ftest__INCLUDED
 
 #include "monster_test_generated.h"
-#include "flatbuffers/grpc.h"
+#include "grpc.h"
 
 #include <grpc++/impl/codegen/async_stream.h>
 #include <grpc++/impl/codegen/async_unary_call.h>

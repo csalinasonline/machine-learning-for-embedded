@@ -28,6 +28,7 @@
 #include "debug_trace.h"
 #include "timer_sched.h"
 #include "model_data.h"
+#include "digit.h"
 
 #include "schema_generated.h"
 #include "all_ops_resolver.h"
@@ -193,10 +194,31 @@ int main(void)
   TfLiteTensor* input = interpreter.input(0);
   TfLiteTensor* output = interpreter.output(0);
 
-  //input->data.f
+  // TRACE(("Copying digit data\n"));
+
+  // for (int i=0; i<3136; i++) {
+  //   input->data.f[i] = digit[i];
+  // }
+  input->data.f[0] = 0.;
 
   // Keep track of how many inferences we have performed
   int inference_count = 0;
+
+  TRACE(("Running inference...\n"));
+  // Run the model on this input and make sure it succeeds.
+  TfLiteStatus invoke_status = interpreter.Invoke();
+  if (invoke_status != kTfLiteOk) {
+    error_reporter->Report("Invoke failed\n");
+  }
+
+  // // Process the inference results.
+  // uint8_t top_category_score = 0;
+  // for (int category_index = 0; category_index < 10; ++category_index) {
+  //   const float category_score = output->data.f[category_index];
+  //   if (category_score > top_category_score) {
+  //     top_category_score = category_score;
+  //   }
+  // }
 
   /* USER CODE END 2 */
 

@@ -127,7 +127,7 @@ What follows is the entire file, broken up by comments:
 
     // automatically generated, do not modify
 
-    #include "flatbuffers/flatbuffers.h"
+    #include "flatbuffers.h"
 
     namespace MyGame {
     namespace Sample {

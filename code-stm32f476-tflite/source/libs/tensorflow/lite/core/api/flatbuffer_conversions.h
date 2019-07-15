@@ -20,8 +20,8 @@ limitations under the License.
 // runtime API and interpreter.
 
 #include "c_api_internal.h"
-#include "error_reporter.h"
-#include "op_resolver.h"
+#include "api/error_reporter.h"
+#include "api/op_resolver.h"
 #include "schema_generated.h"
 
 namespace tflite {

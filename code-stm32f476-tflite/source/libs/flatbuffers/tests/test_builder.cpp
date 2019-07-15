@@ -1,4 +1,4 @@
-#include "flatbuffers/stl_emulation.h"
+#include "stl_emulation.h"
 
 #include "monster_test_generated.h"
 #include "test_builder.h"

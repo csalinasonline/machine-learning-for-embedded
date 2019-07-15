@@ -15,14 +15,13 @@ limitations under the License.
 
 #include "simple_tensor_allocator.h"
 
-#include "flatbuffer_conversions.h"
+#include "api/flatbuffer_conversions.h"
 
 namespace tflite {
 namespace {
 
 TfLiteStatus TfLiteTypeSizeOf(TfLiteType type, size_t* size,
                               ErrorReporter* reporter) {
-  reporter->Report("Data type: %d", type);
   switch (type) {
     case kTfLiteFloat32:
       *size = sizeof(float);
@@ -111,7 +110,6 @@ TfLiteStatus SimpleTensorAllocator::AllocateTensor(
                                         error_reporter));
     result->data.raw =
         reinterpret_cast<char*>(AllocateMemory(result->bytes, type_size));
-    error_reporter->Report("%s: %d bytes", flatbuffer_tensor.name()->c_str(), result->bytes);
     if (result->data.raw == nullptr) {
       const char* tensor_name = flatbuffer_tensor.name()->c_str();
       if (tensor_name == nullptr) {
@@ -131,10 +129,13 @@ TfLiteStatus SimpleTensorAllocator::AllocateTensor(
   for (flatbuffers::uoffset_t n = 0; n < flatbuffer_tensor.shape()->Length(); ++n) {
     result->dims->data[n] = flatbuffer_tensor.shape()->Get(n);
   }
-  if (flatbuffer_tensor.quantization()) {
-    result->params.scale = flatbuffer_tensor.quantization()->scale()->Get(0);
-    result->params.zero_point =
-        flatbuffer_tensor.quantization()->zero_point()->Get(0);
+  const auto* src_quantization = flatbuffer_tensor.quantization();
+  if (src_quantization && src_quantization->scale() &&
+      (src_quantization->scale()->size() > 0) &&
+      src_quantization->zero_point() &&
+      (src_quantization->zero_point()->size() > 0)) {
+    result->params.scale = src_quantization->scale()->Get(0);
+    result->params.zero_point = src_quantization->zero_point()->Get(0);
   }
   result->allocation = nullptr;
   if (flatbuffer_tensor.name()) {

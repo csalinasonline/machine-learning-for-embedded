@@ -16,7 +16,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include "flatbuffers/util.h"
+#include "util.h"
 
 // Test to validate Conan package generated
 

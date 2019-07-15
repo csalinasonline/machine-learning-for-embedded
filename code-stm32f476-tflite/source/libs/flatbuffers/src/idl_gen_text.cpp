@@ -16,10 +16,10 @@
 
 // independent from idl_parser, since this code is not needed for most clients
 
-#include "flatbuffers/flatbuffers.h"
-#include "flatbuffers/flexbuffers.h"
-#include "flatbuffers/idl.h"
-#include "flatbuffers/util.h"
+#include "flatbuffers.h"
+#include "flexbuffers.h"
+#include "idl.h"
+#include "util.h"
 
 namespace flatbuffers {
 

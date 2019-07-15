@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "flatbuffers/reflection.h"
-#include "flatbuffers/util.h"
+#include "reflection.h"
+#include "util.h"
 
 // Helper functionality for reflection.
 

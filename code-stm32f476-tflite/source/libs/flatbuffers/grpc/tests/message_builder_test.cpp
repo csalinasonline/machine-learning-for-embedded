@@ -1,4 +1,4 @@
-#include "flatbuffers/grpc.h"
+#include "grpc.h"
 #include "monster_test_generated.h"
 #include "test_assert.h"
 #include "test_builder.h"

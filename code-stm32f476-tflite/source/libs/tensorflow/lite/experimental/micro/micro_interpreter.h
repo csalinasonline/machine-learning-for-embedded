@@ -16,8 +16,8 @@ limitations under the License.
 #define TENSORFLOW_LITE_EXPERIMENTAL_MICRO_MICRO_INTERPRETER_H_
 
 #include "c_api_internal.h"
-#include "error_reporter.h"
-#include "op_resolver.h"
+#include "api/error_reporter.h"
+#include "api/op_resolver.h"
 #include "simple_tensor_allocator.h"
 #include "schema_generated.h"
 
@@ -53,6 +53,9 @@ class MicroInterpreter {
   ErrorReporter* error_reporter() { return error_reporter_; }
 
  private:
+  TfLiteStatus AllocateInputAndActTensors();
+  TfLiteStatus AllocateTemporaryTensors();
+
   const Model* model_;
   const OpResolver& op_resolver_;
   SimpleTensorAllocator* tensor_allocator_;

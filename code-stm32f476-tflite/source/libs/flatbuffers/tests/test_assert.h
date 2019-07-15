@@ -1,8 +1,8 @@
 #ifndef TEST_ASSERT_H
 #define TEST_ASSERT_H
 
-#include "flatbuffers/base.h"
-#include "flatbuffers/util.h"
+#include "base.h"
+#include "util.h"
 
 // clang-format off
 
