@@ -15,9 +15,9 @@ limitations under the License.
 
 #include <cmath>
 
-#include "c/c_api_internal.h"
-#include "kernels/internal/tensor_ctypes.h"
-#include "kernels/kernel_util.h"
+#include "c_api_internal.h"
+#include "tensor_ctypes.h"
+#include "kernel_util.h"
 
 namespace tflite {
 namespace ops {

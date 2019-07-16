@@ -47,7 +47,7 @@ set(TENSORFLOW_LITE_SRC
     ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/kernels/elementwise.cc
     ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/kernels/fully_connected.cc
     ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/kernels/pooling.cc
-    ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/kernels/portable_optimized/depthwise_conv.cc
+    # ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/kernels/portable_optimized/depthwise_conv.cc
     ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/kernels/softmax.cc
     ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/micro_error_reporter.cc
     ${TENSORFLOW_LITE_DIR}/lite/experimental/micro/micro_interpreter.cc

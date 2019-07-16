@@ -13,8 +13,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "builtin_op_data.h"
-#include "c_api_internal.h"
+#include "c/builtin_op_data.h"
+#include "c/c_api_internal.h"
 #include "common.h"
 #include "quantization_util.h"
 #include "tensor_ctypes.h"

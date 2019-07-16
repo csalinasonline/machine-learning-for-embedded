@@ -13,7 +13,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 #include "kernels/internal/reference/pooling.h"
-
 #include "c/builtin_op_data.h"
 #include "kernels/internal/tensor_ctypes.h"
 #include "kernels/kernel_util.h"

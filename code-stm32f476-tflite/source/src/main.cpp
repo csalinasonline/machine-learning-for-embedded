@@ -210,15 +210,16 @@ int main(void)
   if (invoke_status != kTfLiteOk) {
     error_reporter->Report("Invoke failed\n");
   }
+  TRACE(("Done...\n"));
 
-  // // Process the inference results.
-  // uint8_t top_category_score = 0;
-  // for (int category_index = 0; category_index < 10; ++category_index) {
-  //   const float category_score = output->data.f[category_index];
-  //   if (category_score > top_category_score) {
-  //     top_category_score = category_score;
-  //   }
-  // }
+  // Process the inference results.
+  uint8_t top_category_score = 0;
+  for (int category_index = 0; category_index < 10; ++category_index) {
+    const float category_score = output->data.f[category_index];
+    if (category_score > top_category_score) {
+      top_category_score = category_score;
+    }
+  }
 
   /* USER CODE END 2 */
 

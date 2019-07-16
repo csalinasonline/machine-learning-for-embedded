@@ -14,15 +14,15 @@ limitations under the License.
 ==============================================================================*/
 
 #include "arm_nnfunctions.h"
-#include "builtin_op_data.h"
-#include "c_api_internal.h"
-#include "common.h"
-#include "quantization_util.h"
-#include "depthwiseconv_float.h"
-#include "depthwiseconv_uint8.h"
-#include "tensor_ctypes.h"
-#include "kernel_util.h"
-#include "padding.h"
+#include "c/builtin_op_data.h"
+#include "c/c_api_internal.h"
+#include "kernels/internal/common.h"
+#include "kernels/internal/quantization_util.h"
+#include "kernels/internal/reference/depthwiseconv_float.h"
+#include "kernels/internal/reference/depthwiseconv_uint8.h"
+#include "kernels/internal/tensor_ctypes.h"
+#include "kernels/kernel_util.h"
+#include "kernels/padding.h"
 
 namespace tflite {
 namespace ops {
