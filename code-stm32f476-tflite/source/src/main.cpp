@@ -195,11 +195,20 @@ int main(void)
   TfLiteTensor* output = interpreter.output(0);
 
   // TRACE(("Copying digit data\n"));
+  TRACE(("dims->size: %d\n", input->dims->size));
+  TRACE(("dims->data[0]: %d\n", input->dims->data[0]));
+  TRACE(("dims->data[1]: %d\n", input->dims->data[1]));
+  TRACE(("dims->data[2]: %d\n", input->dims->data[2]));
+  TRACE(("dims->data[3]: %d\n", input->dims->data[3]));
+  TRACE(("input->type: %d\n", input->type));
 
-  // for (int i=0; i<3136; i++) {
-  //   input->data.f[i] = digit[i];
-  // }
-  input->data.f[0] = 0.;
+  TRACE(("input data size: %lu\n", input->bytes ));
+
+  //
+  for (int i=0; i<784; i++) {
+    input->data.f[i] = digit[i];
+  }
+  // input->data.f[0] = 0.;
 
   // Keep track of how many inferences we have performed
   int inference_count = 0;
@@ -212,13 +221,14 @@ int main(void)
   }
   TRACE(("Done...\n"));
 
-  // Process the inference results.
-  uint8_t top_category_score = 0;
-  for (int category_index = 0; category_index < 10; ++category_index) {
-    const float category_score = output->data.f[category_index];
-    if (category_score > top_category_score) {
-      top_category_score = category_score;
-    }
+  // Obtain a pointer to the output tensor and make sure it has the
+  // properties we expect. It should be the same as the input tensor.
+  TRACE(("dims->size: %d\n", output->dims->size));
+  TRACE(("dims->data[0]: %d\n", output->dims->data[0]));
+  TRACE(("dims->data[1]: %d\n", output->dims->data[1]));
+
+  for (int i=0; i<10; i++) {
+    TRACE(("Out[%d]: %f\n", i, output->data.f[i]));
   }
 
   /* USER CODE END 2 */
