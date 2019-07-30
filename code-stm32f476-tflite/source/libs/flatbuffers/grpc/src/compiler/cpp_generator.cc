@@ -34,7 +34,7 @@
 #include <map>
 
 #include "src/compiler/cpp_generator.h"
-#include "flatbuffers/util.h"
+#include "util.h"
 
 #include <sstream>
 

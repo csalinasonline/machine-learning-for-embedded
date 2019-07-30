@@ -4,7 +4,7 @@
 #ifndef FLATBUFFERS_GENERATED_NAMESPACETEST1_NAMESPACEA_NAMESPACEB_H_
 #define FLATBUFFERS_GENERATED_NAMESPACETEST1_NAMESPACEA_NAMESPACEB_H_
 
-#include "flatbuffers/flatbuffers.h"
+#include "flatbuffers.h"
 
 namespace NamespaceA {
 namespace NamespaceB {

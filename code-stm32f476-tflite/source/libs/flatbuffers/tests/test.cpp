@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 #include <cmath>
-#include "flatbuffers/flatbuffers.h"
-#include "flatbuffers/idl.h"
-#include "flatbuffers/minireflect.h"
-#include "flatbuffers/registry.h"
-#include "flatbuffers/util.h"
+#include "flatbuffers.h"
+#include "idl.h"
+#include "minireflect.h"
+#include "registry.h"
+#include "util.h"
 
 // clang-format off
 #ifdef FLATBUFFERS_CPP98_STL
-  #include "flatbuffers/stl_emulation.h"
+  #include "stl_emulation.h"
   namespace std {
     using flatbuffers::unique_ptr;
   }
@@ -36,7 +36,7 @@
 #include "monster_extra_generated.h"
 #include "test_assert.h"
 
-#include "flatbuffers/flexbuffers.h"
+#include "flexbuffers.h"
 
 using namespace MyGame::Example;
 

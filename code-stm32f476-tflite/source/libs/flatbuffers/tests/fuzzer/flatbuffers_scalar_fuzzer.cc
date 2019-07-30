@@ -7,7 +7,7 @@
 #include <regex>
 #include <string>
 
-#include "flatbuffers/idl.h"
+#include "idl.h"
 #include "test_init.h"
 
 static constexpr uint8_t flags_scalar_type = 0x0F;  // type of scalar value

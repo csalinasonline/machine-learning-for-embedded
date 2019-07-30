@@ -44,8 +44,8 @@ class MnistDigitDraw:
     def _paint(self,event):
         x1, y1 = (event.x - 1), (event.y - 1)
         x2, y2 = (event.x + 1), (event.y + 1)
-        self._canvas.create_oval(x1, y1, x2, y2, fill="black",width=20)
-        self._draw.line([x1, y1, x2, y2],fill="black",width=20)
+        self._canvas.create_oval(x1, y1, x2, y2, fill="black",width=30)
+        self._draw.line([x1, y1, x2, y2],fill="black",width=30)
 
     def _convert_image(self):
         # First down-scale the image at mnist size

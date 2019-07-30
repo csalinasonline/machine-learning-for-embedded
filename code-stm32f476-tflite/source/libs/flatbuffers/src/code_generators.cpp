@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include "flatbuffers/code_generators.h"
+#include "code_generators.h"
 #include <assert.h>
-#include "flatbuffers/base.h"
-#include "flatbuffers/util.h"
+#include "base.h"
+#include "util.h"
 
 #include <cmath>
 

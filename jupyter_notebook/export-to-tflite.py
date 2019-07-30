@@ -1,12 +1,16 @@
 import tensorflow as tf
 import os, sys
 
-def export(model_name, micro=False):
+def export(model_name, mode):
     converter = tf.lite.TFLiteConverter.from_keras_model_file(model_name)
-    if micro:
-        # converter.inference_type = tf.lite.constants.QUANTIZED_UINT8
-        # input_arrays = converter.get_input_arrays()
-        # converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
+    if 'uint8' in mode:
+        print('Optimizing for QUANTIZED_UINT8')
+        converter.inference_type = tf.uint8
+        input_arrays = converter.get_input_arrays()
+        converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
+        converter.default_ranges_stats = [-1, 1]
+    elif 'size' in mode:
+        print('Optimizing for OPTIMIZE_FOR_SIZE')
         converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
     tflite_model = converter.convert()
     new_fname = os.path.splitext(model_name)[0] + '.tflite'
@@ -23,9 +27,10 @@ def export(model_name, micro=False):
 
 if __name__=="__main__":
     model_name = sys.argv[1]
-    micro = True if 'micro' in sys.argv[0] else False
+    mode = sys.argv[2]
+    
     if 'h5' not in model_name:
         print('Can only convert HDF5 (*.h5) models')
         quit(1)
     
-    export(model_name, micro)
+    export(model_name, mode)

@@ -57,7 +57,7 @@ First, include the library and generated code. Then read the file into
 a `char *` array, which you pass to `GetMonster()`.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cpp}
-    #include "flatbuffers/flatbuffers.h"
+    #include "flatbuffers.h"
     #include "monster_test_generate.h"
     #include <iostream> // C++ header file for printing
     #include <fstream> // C++ header file for file access

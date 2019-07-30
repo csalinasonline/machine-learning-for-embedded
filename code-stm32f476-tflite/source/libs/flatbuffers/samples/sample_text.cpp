@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "flatbuffers/idl.h"
-#include "flatbuffers/util.h"
+#include "idl.h"
+#include "util.h"
 
 #include "monster_generated.h"  // Already includes "flatbuffers/flatbuffers.h".
 

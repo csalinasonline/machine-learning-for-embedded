@@ -4,7 +4,7 @@
 #ifndef FLATBUFFERS_GENERATED_NAMESPACETEST2_NAMESPACEA_H_
 #define FLATBUFFERS_GENERATED_NAMESPACETEST2_NAMESPACEA_H_
 
-#include "flatbuffers/flatbuffers.h"
+#include "flatbuffers.h"
 
 #include "namespace_test1_generated.h"
 

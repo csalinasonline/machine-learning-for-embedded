@@ -4,8 +4,8 @@
 #ifndef FLATBUFFERS_GENERATED_MONSTERTEST_MYGAME_EXAMPLE_H_
 #define FLATBUFFERS_GENERATED_MONSTERTEST_MYGAME_EXAMPLE_H_
 
-#include "flatbuffers/flatbuffers.h"
-#include "flatbuffers/flexbuffers.h"
+#include "flatbuffers.h"
+#include "flexbuffers.h"
 
 namespace MyGame {
 

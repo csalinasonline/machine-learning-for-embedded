@@ -28,6 +28,7 @@
 #include "debug_trace.h"
 #include "timer_sched.h"
 #include "model_data.h"
+#include "digit.h"
 
 #include "schema_generated.h"
 #include "all_ops_resolver.h"
@@ -193,10 +194,42 @@ int main(void)
   TfLiteTensor* input = interpreter.input(0);
   TfLiteTensor* output = interpreter.output(0);
 
-  //input->data.f
+  // TRACE(("Copying digit data\n"));
+  TRACE(("dims->size: %d\n", input->dims->size));
+  TRACE(("dims->data[0]: %d\n", input->dims->data[0]));
+  TRACE(("dims->data[1]: %d\n", input->dims->data[1]));
+  TRACE(("dims->data[2]: %d\n", input->dims->data[2]));
+  TRACE(("dims->data[3]: %d\n", input->dims->data[3]));
+  TRACE(("input->type: %d\n", input->type));
+
+  TRACE(("input data size: %lu\n", input->bytes ));
+
+  //
+  for (int i=0; i<784; i++) {
+    input->data.f[i] = digit[i];
+  }
+  // input->data.f[0] = 0.;
 
   // Keep track of how many inferences we have performed
   int inference_count = 0;
+
+  TRACE(("Running inference...\n"));
+  // Run the model on this input and make sure it succeeds.
+  TfLiteStatus invoke_status = interpreter.Invoke();
+  if (invoke_status != kTfLiteOk) {
+    error_reporter->Report("Invoke failed\n");
+  }
+  TRACE(("Done...\n"));
+
+  // Obtain a pointer to the output tensor and make sure it has the
+  // properties we expect. It should be the same as the input tensor.
+  TRACE(("dims->size: %d\n", output->dims->size));
+  TRACE(("dims->data[0]: %d\n", output->dims->data[0]));
+  TRACE(("dims->data[1]: %d\n", output->dims->data[1]));
+
+  for (int i=0; i<10; i++) {
+    TRACE(("Out[%d]: %f\n", i, output->data.f[i]));
+  }
 
   /* USER CODE END 2 */
 

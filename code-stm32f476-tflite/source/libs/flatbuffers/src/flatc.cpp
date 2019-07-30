@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "flatbuffers/flatc.h"
+#include "flatc.h"
 
 #include <list>
 

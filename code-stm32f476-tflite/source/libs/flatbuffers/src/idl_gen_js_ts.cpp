@@ -19,10 +19,10 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "flatbuffers/code_generators.h"
-#include "flatbuffers/flatbuffers.h"
-#include "flatbuffers/idl.h"
-#include "flatbuffers/util.h"
+#include "code_generators.h"
+#include "flatbuffers.h"
+#include "idl.h"
+#include "util.h"
 
 namespace flatbuffers {
 

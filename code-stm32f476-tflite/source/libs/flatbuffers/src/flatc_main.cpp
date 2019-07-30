@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "flatbuffers/flatc.h"
+#include "flatc.h"
 
 static const char *g_program_name = nullptr;
 

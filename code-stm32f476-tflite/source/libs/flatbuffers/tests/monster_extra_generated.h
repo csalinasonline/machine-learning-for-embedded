@@ -4,7 +4,7 @@
 #ifndef FLATBUFFERS_GENERATED_MONSTEREXTRA_MYGAME_H_
 #define FLATBUFFERS_GENERATED_MONSTEREXTRA_MYGAME_H_
 
-#include "flatbuffers/flatbuffers.h"
+#include "flatbuffers.h"
 
 namespace MyGame {
 

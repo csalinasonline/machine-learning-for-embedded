@@ -20,8 +20,8 @@
 
 #include <math.h>
 
-#include "flatbuffers/idl.h"
-#include "flatbuffers/util.h"
+#include "idl.h"
+#include "util.h"
 
 namespace flatbuffers {
 
